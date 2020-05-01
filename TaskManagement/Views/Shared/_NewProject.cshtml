@@ -1,0 +1,34 @@
+﻿@model TaskManagement.Models.ProjectViewModel
+
+
+@using (Ajax.BeginForm("CreateProject", "Admin", new AjaxOptions { HttpMethod = "POST", OnBegin = "callAlert", OnSuccess = "ShowSuccess", OnFailure = "ShowFailure" }))
+{
+
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Create a New Project
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <tr>
+                        <td class="control-label">Project Tittle @Model.Label</td>
+                        <td>@Html.EditorFor(a => a.Label, new { @class = "form-control" })<span>@Html.ValidationMessageFor(m => m.Label, "", new { @class = "text-danger" })</span> </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="btn btn-primary" type="submit" id="btnCreateNewProject">Create Project</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/custom")
+}
+

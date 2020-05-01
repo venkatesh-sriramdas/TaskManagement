@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Task_ManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="ProjectId" />
+          </Key>
+          <Property Name="ProjectId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedById" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Projects_Tasks">
+          <Key>
+            <PropertyRef Name="ProjectTaskId" />
+          </Key>
+          <Property Name="ProjectTaskId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectId" Type="bigint" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedById" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="TaskStatusId" Type="smallint" Nullable="false" />
+          <Property Name="PriorityStatusId" Type="smallint" Nullable="false" />
+          <Property Name="ModifiedById" Type="bigint" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Projects_Users">
+          <Key>
+            <PropertyRef Name="ProjectUserId" />
+          </Key>
+          <Property Name="ProjectUserId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectId" Type="bigint" Nullable="false" />
+          <Property Name="EmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="CreatedById" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role_Status">
+          <Key>
+            <PropertyRef Name="RoleStatusId" />
+          </Key>
+          <Property Name="RoleStatusId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RoleStatusId" Type="smallint" />
+          <Property Name="CreatedById" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Task_Status">
+          <Key>
+            <PropertyRef Name="TaskStatusId" />
+          </Key>
+          <Property Name="TaskStatusId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TaskPriority">
+          <Key>
+            <PropertyRef Name="PriorityId" />
+          </Key>
+          <Property Name="PriorityId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Label" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="EmailId" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="RoleId" Type="smallint" Nullable="false" />
+          <Property Name="CreatedById" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Projects___Emplo__534D60F1">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Projects_Users" Type="Self.Projects_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Projects_Users">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Projects___Proje__4E88ABD4">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="Projects_Tasks" Type="Self.Projects_Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="Projects_Tasks">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Projects___Proje__52593CB8">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="Projects_Users" Type="Self.Projects_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="Projects_Users">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Projects___TaskS__4F7CD00D">
+          <End Role="Task_Status" Type="Self.Task_Status" Multiplicity="1" />
+          <End Role="Projects_Tasks" Type="Self.Projects_Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task_Status">
+              <PropertyRef Name="TaskStatusId" />
+            </Principal>
+            <Dependent Role="Projects_Tasks">
+              <PropertyRef Name="TaskStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Roles__RoleStatu__3F466844">
+          <End Role="Role_Status" Type="Self.Role_Status" Multiplicity="0..1" />
+          <End Role="Roles" Type="Self.Roles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role_Status">
+              <PropertyRef Name="RoleStatusId" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="RoleStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__RoleId__44FF419A">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PriorityStatus">
+          <End Role="TaskPriority" Type="Self.TaskPriority" Multiplicity="1" />
+          <End Role="Projects_Tasks" Type="Self.Projects_Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskPriority">
+              <PropertyRef Name="PriorityId" />
+            </Principal>
+            <Dependent Role="Projects_Tasks">
+              <PropertyRef Name="PriorityStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Task_ManagementModelStoreContainer">
+          <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projects_Tasks" EntityType="Self.Projects_Tasks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projects_Users" EntityType="Self.Projects_Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role_Status" EntityType="Self.Role_Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task_Status" EntityType="Self.Task_Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskPriority" EntityType="Self.TaskPriority" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Projects___Emplo__534D60F1" Association="Self.FK__Projects___Emplo__534D60F1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Projects_Users" EntitySet="Projects_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Projects___Proje__4E88ABD4" Association="Self.FK__Projects___Proje__4E88ABD4">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Projects_Tasks" EntitySet="Projects_Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Projects___Proje__52593CB8" Association="Self.FK__Projects___Proje__52593CB8">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Projects_Users" EntitySet="Projects_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Projects___TaskS__4F7CD00D" Association="Self.FK__Projects___TaskS__4F7CD00D">
+            <End Role="Task_Status" EntitySet="Task_Status" />
+            <End Role="Projects_Tasks" EntitySet="Projects_Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Roles__RoleStatu__3F466844" Association="Self.FK__Roles__RoleStatu__3F466844">
+            <End Role="Role_Status" EntitySet="Role_Status" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__RoleId__44FF419A" Association="Self.FK__Users__RoleId__44FF419A">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriorityStatus" Association="Self.FK_PriorityStatus">
+            <End Role="TaskPriority" EntitySet="TaskPriority" />
+            <End Role="Projects_Tasks" EntitySet="Projects_Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Task_ManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ProjectId" />
+          </Key>
+          <Property Name="ProjectId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedById" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Projects_Tasks" Relationship="Self.FK__Projects___Proje__4E88ABD4" FromRole="Projects" ToRole="Projects_Tasks" />
+          <NavigationProperty Name="Projects_Users" Relationship="Self.FK__Projects___Proje__52593CB8" FromRole="Projects" ToRole="Projects_Users" />
+        </EntityType>
+        <EntityType Name="Projects_Tasks">
+          <Key>
+            <PropertyRef Name="ProjectTaskId" />
+          </Key>
+          <Property Name="ProjectTaskId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectId" Type="Int64" Nullable="false" />
+          <Property Name="Label" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedById" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="TaskStatusId" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__Projects___Proje__4E88ABD4" FromRole="Projects_Tasks" ToRole="Projects" />
+          <NavigationProperty Name="Task_Status" Relationship="Self.FK__Projects___TaskS__4F7CD00D" FromRole="Projects_Tasks" ToRole="Task_Status" />
+          <Property Name="PriorityStatusId" Type="Int16" Nullable="false" />
+          <Property Name="ModifiedById" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="TaskPriority" Relationship="Task_ManagementModel.FK_PriorityStatus" FromRole="Projects_Tasks" ToRole="TaskPriority" />
+        </EntityType>
+        <EntityType Name="Projects_Users">
+          <Key>
+            <PropertyRef Name="ProjectUserId" />
+          </Key>
+          <Property Name="ProjectUserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectId" Type="Int64" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="CreatedById" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Project" Relationship="Self.FK__Projects___Proje__52593CB8" FromRole="Projects_Users" ToRole="Projects" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Projects___Emplo__534D60F1" FromRole="Projects_Users" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Role_Status">
+          <Key>
+            <PropertyRef Name="RoleStatusId" />
+          </Key>
+          <Property Name="RoleStatusId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK__Roles__RoleStatu__3F466844" FromRole="Role_Status" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleStatusId" Type="Int16" />
+          <Property Name="CreatedById" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Role_Status" Relationship="Self.FK__Roles__RoleStatu__3F466844" FromRole="Roles" ToRole="Role_Status" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__RoleId__44FF419A" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Task_Status">
+          <Key>
+            <PropertyRef Name="TaskStatusId" />
+          </Key>
+          <Property Name="TaskStatusId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Projects_Tasks" Relationship="Self.FK__Projects___TaskS__4F7CD00D" FromRole="Task_Status" ToRole="Projects_Tasks" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailId" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="Int16" Nullable="false" />
+          <Property Name="CreatedById" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Projects_Users" Relationship="Self.FK__Projects___Emplo__534D60F1" FromRole="Users" ToRole="Projects_Users" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__Users__RoleId__44FF419A" FromRole="Users" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK__Projects___Proje__4E88ABD4">
+          <End Role="Projects" Type="Self.Project" Multiplicity="1" />
+          <End Role="Projects_Tasks" Type="Self.Projects_Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="Projects_Tasks">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Projects___Proje__52593CB8">
+          <End Role="Projects" Type="Self.Project" Multiplicity="1" />
+          <End Role="Projects_Users" Type="Self.Projects_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjectId" />
+            </Principal>
+            <Dependent Role="Projects_Users">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Projects___TaskS__4F7CD00D">
+          <End Role="Task_Status" Type="Self.Task_Status" Multiplicity="1" />
+          <End Role="Projects_Tasks" Type="Self.Projects_Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task_Status">
+              <PropertyRef Name="TaskStatusId" />
+            </Principal>
+            <Dependent Role="Projects_Tasks">
+              <PropertyRef Name="TaskStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Projects___Emplo__534D60F1">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Projects_Users" Type="Self.Projects_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Projects_Users">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Roles__RoleStatu__3F466844">
+          <End Role="Role_Status" Type="Self.Role_Status" Multiplicity="0..1" />
+          <End Role="Roles" Type="Self.Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role_Status">
+              <PropertyRef Name="RoleStatusId" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="RoleStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__RoleId__44FF419A">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Task_ManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Projects_Tasks" EntityType="Self.Projects_Tasks" />
+          <EntitySet Name="Projects_Users" EntityType="Self.Projects_Users" />
+          <EntitySet Name="Role_Status" EntityType="Self.Role_Status" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Task_Status" EntityType="Self.Task_Status" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK__Projects___Proje__4E88ABD4" Association="Self.FK__Projects___Proje__4E88ABD4">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Projects_Tasks" EntitySet="Projects_Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Projects___Proje__52593CB8" Association="Self.FK__Projects___Proje__52593CB8">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Projects_Users" EntitySet="Projects_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Projects___TaskS__4F7CD00D" Association="Self.FK__Projects___TaskS__4F7CD00D">
+            <End Role="Task_Status" EntitySet="Task_Status" />
+            <End Role="Projects_Tasks" EntitySet="Projects_Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Projects___Emplo__534D60F1" Association="Self.FK__Projects___Emplo__534D60F1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Projects_Users" EntitySet="Projects_Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Roles__RoleStatu__3F466844" Association="Self.FK__Roles__RoleStatu__3F466844">
+            <End Role="Role_Status" EntitySet="Role_Status" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__RoleId__44FF419A" Association="Self.FK__Users__RoleId__44FF419A">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="TaskPriorities" EntityType="Task_ManagementModel.TaskPriority" />
+          <AssociationSet Name="FK_PriorityStatus" Association="Task_ManagementModel.FK_PriorityStatus">
+            <End Role="TaskPriority" EntitySet="TaskPriorities" />
+            <End Role="Projects_Tasks" EntitySet="Projects_Tasks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TaskPriority">
+          <Key>
+            <PropertyRef Name="PriorityId" />
+          </Key>
+          <Property Name="PriorityId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Projects_Tasks" Relationship="Task_ManagementModel.FK_PriorityStatus" FromRole="TaskPriority" ToRole="Projects_Tasks" />
+        </EntityType>
+        <Association Name="FK_PriorityStatus">
+          <End Type="Task_ManagementModel.TaskPriority" Role="TaskPriority" Multiplicity="1" />
+          <End Type="Task_ManagementModel.Projects_Tasks" Role="Projects_Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskPriority">
+              <PropertyRef Name="PriorityId" />
+            </Principal>
+            <Dependent Role="Projects_Tasks">
+              <PropertyRef Name="PriorityStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Task_ManagementModelStoreContainer" CdmEntityContainer="Task_ManagementEntities">
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="Task_ManagementModel.Project">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects_Tasks">
+            <EntityTypeMapping TypeName="Task_ManagementModel.Projects_Tasks">
+              <MappingFragment StoreEntitySet="Projects_Tasks">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedById" ColumnName="ModifiedById" />
+                <ScalarProperty Name="PriorityStatusId" ColumnName="PriorityStatusId" />
+                <ScalarProperty Name="ProjectTaskId" ColumnName="ProjectTaskId" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="TaskStatusId" ColumnName="TaskStatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects_Users">
+            <EntityTypeMapping TypeName="Task_ManagementModel.Projects_Users">
+              <MappingFragment StoreEntitySet="Projects_Users">
+                <ScalarProperty Name="ProjectUserId" ColumnName="ProjectUserId" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role_Status">
+            <EntityTypeMapping TypeName="Task_ManagementModel.Role_Status">
+              <MappingFragment StoreEntitySet="Role_Status">
+                <ScalarProperty Name="RoleStatusId" ColumnName="RoleStatusId" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="Task_ManagementModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="RoleStatusId" ColumnName="RoleStatusId" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Task_Status">
+            <EntityTypeMapping TypeName="Task_ManagementModel.Task_Status">
+              <MappingFragment StoreEntitySet="Task_Status">
+                <ScalarProperty Name="TaskStatusId" ColumnName="TaskStatusId" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Task_ManagementModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="CreatedById" ColumnName="CreatedById" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskPriorities">
+            <EntityTypeMapping TypeName="Task_ManagementModel.TaskPriority">
+              <MappingFragment StoreEntitySet="TaskPriority">
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="PriorityId" ColumnName="PriorityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
